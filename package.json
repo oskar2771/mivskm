@@ -1,0 +1,23 @@
+{
+  "name": "mivskm",
+  "version": "1.0.0",
+  "description": "Materialeinvendita Standalone KioskMode",
+  "main": "mivkm",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oskar2771/mivskm.git"
+  },
+  "author": "KondorCS",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oskar2771/mivskm/issues"
+  },
+  "homepage": "https://github.com/oskar2771/mivskm#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "open": "^8.0.2"
+  }
+}
