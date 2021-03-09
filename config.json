@@ -1,0 +1,6 @@
+{
+    "baseURL": "tuttocitta.data-smart.it",
+    "webTree": ["/index", "/store"],
+    "webTreeJS": { "dirName": "/JS", "jsFilesPath": ["/config.js", "/addons/jquery-3.5.1.min.js", "/scripts/rest.js", "/scripts/store.js", "/scripts/func.js"] },
+    "webTreeCSS": { "dirName": "/css", "cssFilesPath": ["/main.css", "/icons.css", "/store.css", "/controlpanel.css"] }
+}
