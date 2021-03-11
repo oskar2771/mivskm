@@ -12,16 +12,18 @@ console.log("\x1b[36m%s\x1b[0m", "Version: " + OSrelease);
 const OSplatform = os.platform();
 console.log("\x1b[36m%s\x1b[0m", "Platform: " + OSplatform);
 console.log("\x1b[36m%s\x1b[0m", "#####################################################################");
-const windowsPrefixPATH = "C:/Users/H17/Desktop/NJS/";
+const windowsPrefixPATH = "C:/Users/H17/Desktop/MIVKStandalone/mivskm/";
 const androidPrefixPATH = "/data/data/com.termux/files/home/NJS/";
 const OSPrefixPATH = OSplatform == "android" ? androidPrefixPATH : OSplatform == "win32" ? windowsPrefixPATH : null;
 const { exec } = require("child_process");
 //const liveServer = require("live-server");
 const { Console, error } = require("console");
 const fs = require("fs");
+const langconfigFile = fs.readFileSync(OSPrefixPATH + "langconfig.json");
 const configFile = fs.readFileSync(OSPrefixPATH + "config.json");
 const contentFile = fs.readFileSync(OSPrefixPATH + "content.json");
 const itemsContentFile = fs.readFileSync(OSPrefixPATH + "webTree/items_content.json");
+const langConfig = JSON.parse(langconfigFile);
 const webConfig = JSON.parse(configFile);
 const webContent = JSON.parse(contentFile);
 const webitemsContent = JSON.parse(itemsContentFile);
@@ -41,11 +43,11 @@ function checkLocalStorage() {
     for (let dd = 0; dd < defaultDirectories.length; dd++) {
         let _localdefaultDirectories = OSPrefixPATH + "webTree" + defaultDirectories[dd];
         if (!fs.existsSync(_localdefaultDirectories)) {
-            console.log("Creazione della cartella necessaria...", _localdefaultDirectories);
+            console.log(langConfig.creazione_cartella_necess, _localdefaultDirectories);
             fs.mkdirSync(_localdefaultDirectories, { recursive: true });
             //Quando la directory vieni create (per linux/android) ci sta il bisogno di cambiare il permesso del file per poter salvare dentro altri file
             fs.chmod(_localdefaultDirectories, 0777, (error) => {
-                if (error) console.error(`Impossibile cambiare il permesso del file per (${_localdefaultDirectories})`);
+                if (error) console.error(langConfig.cannot_change_file_ferm, `(${_localdefaultDirectories})`);
             });
         }
         if (dd == defaultDirectories.length - 1) {
@@ -56,23 +58,18 @@ function checkLocalStorage() {
 
 function checkWebIntegrity() {
     if (!isOnline) {
-        console.log(
-            "\x1b[32m",
-            "\n#####################################################################\nNessuna conessione internet trovata...\n#####################################################################\n"
-        );
-        console.log("\n#####################################################################\nRichiesta di avvio del server locale");
+        console.log("\x1b[32m", langConfig.no_internet);
+        console.log(langConfig.start_self_server_request);
         setTimeout(function () {
             startWebServer();
         }, 5000);
+        return;
     }
 
-    console.log(
-        "\x1b[32m",
-        "\n#####################################################################\nAvvio del aggiornamento dei file in corso...\n#####################################################################\n"
-    );
+    console.log("\x1b[32m", langConfig.start_file_update);
 
     if (webConfig.baseURL == undefined) {
-        console.error("Nessun URL specificato nel file config...");
+        console.error(langConfig.no_base_url);
         process.exit(1);
     }
 
@@ -91,14 +88,14 @@ function checkWebIntegrity() {
 
         let data = "null";
         var req = https.request(options, function (res) {
-            console.log(`Controllo (${webConfig.webTree[webPathIndex]})`);
+            console.log(langConfig.check_update_for, `(${webConfig.webTree[webPathIndex]})`);
             let headers = res.headers;
 
             let acessPath = "null";
             try {
                 acessPath = webContent.content[webPathIndex].urlPath;
             } catch (error) {
-                console.error("\x1b[35m", "Aggiornamento del contenuto nel config: ", webConfig.webTree[webPathIndex]);
+                console.error("\x1b[35m", langConfig.config_content_update, webConfig.webTree[webPathIndex]);
             }
 
             fs.access(OSPrefixPATH + "webTree" + acessPath, (error) => {
@@ -107,7 +104,7 @@ function checkWebIntegrity() {
                     headers["content-length"] == webContent.content[webPathIndex].contentlength &&
                     headers["last-modified"] == webContent.content[webPathIndex].lastmodified
                 ) {
-                    console.log(`Nessun aggiornamento per (${webContent.content[webPathIndex].urlPath})`);
+                    console.log(langConfig.no_update_for, `(${webContent.content[webPathIndex].urlPath})`);
                     if (webPathIndex == webConfig.webTree.length - 1) {
                         //Indica che il controllo dei file HTML Г© finito
                         _done_HTML = true;
@@ -115,7 +112,7 @@ function checkWebIntegrity() {
                     }
                     return;
                 } else {
-                    console.error("\x1b[35m", "Aggiornamento del contenuto nei file locali: ", webConfig.webTree[webPathIndex]);
+                    console.error("\x1b[35m", langConfig.local_content_update, webConfig.webTree[webPathIndex]);
                     data = "";
                     res.on("data", (chunk) => {
                         data += chunk;
@@ -126,7 +123,7 @@ function checkWebIntegrity() {
                         fs.writeFileSync(fileName, data, "utf8", function (err) {
                             if (err) return console.log(err);
                             fs.chmod(fileName, 0777, (error) => {
-                                if (error) console.error(`Impossibile cambiare il permesso del file per (${webConfig.webTree[webPathIndex]})`);
+                                if (error) console.error(langConfig.cannot_change_file_ferm, `(${webConfig.webTree[webPathIndex]})`);
                             });
                         });
                         webContent.content[webPathIndex] = {
@@ -158,13 +155,13 @@ function checkWebIntegrity() {
         };
         let data = "null";
         var req = https.request(options, function (res) {
-            console.log(`Controllo (${webConfig.webTreeJS.dirName + webConfig.webTreeJS.jsFilesPath[jsPathIndex]})`);
+            console.log(langConfig.check_update_for, `(${webConfig.webTreeJS.dirName + webConfig.webTreeJS.jsFilesPath[jsPathIndex]})`);
             let headers = res.headers;
             let acessPath = "null";
             try {
                 acessPath = webContent.jscontent[jsPathIndex].urlPath;
             } catch (error) {
-                console.error("\x1b[35m", "Aggiornamento del contenuto nel config: ", webConfig.webTreeJS.dirName + webConfig.webTreeJS.jsFilesPath[jsPathIndex]);
+                console.error("\x1b[35m", langConfig.config_content_update, webConfig.webTreeJS.dirName + webConfig.webTreeJS.jsFilesPath[jsPathIndex]);
             }
 
             fs.access(OSPrefixPATH + "webTree" + acessPath, (error) => {
@@ -173,14 +170,14 @@ function checkWebIntegrity() {
                     headers["content-length"] == webContent.jscontent[jsPathIndex].contentlength &&
                     headers["last-modified"] == webContent.jscontent[jsPathIndex].lastmodified
                 ) {
-                    console.log(`Nessun aggiornamento per (${webContent.jscontent[jsPathIndex].urlPath})`);
+                    console.log(langConfig.no_update_for, `(${webContent.jscontent[jsPathIndex].urlPath})`);
                     if (jsPathIndex == webConfig.webTreeJS.jsFilesPath.length - 1) {
                         _done_JS = true;
                         redyForWebProductsIntegrityCheck(_done_HTML, _done_JS, _done_CSS);
                     }
                     return;
                 } else {
-                    console.error("\x1b[35m", "Aggiornamento del contenuto nei file locali: ", webConfig.webTreeJS.dirName + webConfig.webTreeJS.jsFilesPath[jsPathIndex]);
+                    console.error("\x1b[35m", langConfig.local_content_update, webConfig.webTreeJS.dirName + webConfig.webTreeJS.jsFilesPath[jsPathIndex]);
 
                     data = "";
                     res.on("data", (chunk) => {
@@ -192,7 +189,7 @@ function checkWebIntegrity() {
                         fs.writeFileSync(fileName, data, "utf8", function (err) {
                             if (err) return console.log(err);
                             fs.chmod(fileName, 0777, (error) => {
-                                if (error) console.error(`Impossibile cambiare il permesso del file per (${webConfig.webTreeJS.jsFilesPath[jsPathIndex]})`);
+                                if (error) console.error(langConfig.cannot_change_file_ferm, `(${webConfig.webTreeJS.jsFilesPath[jsPathIndex]})`);
                             });
                         });
                         webContent.jscontent[jsPathIndex] = {
@@ -228,7 +225,7 @@ function checkWebIntegrity() {
             try {
                 acessPath = webContent.csscontent[cssPathIndex].urlPath;
             } catch (error) {
-                console.error("\x1b[35m", "Aggiornamento del contenuto nel config: ", webConfig.webTreeCSS.dirName + webConfig.webTreeCSS.cssFilesPath[cssPathIndex]);
+                console.error("\x1b[35m", langConfig.config_content_update, webConfig.webTreeCSS.dirName + webConfig.webTreeCSS.cssFilesPath[cssPathIndex]);
             }
 
             fs.access(OSPrefixPATH + "webTree" + acessPath, (error) => {
@@ -237,14 +234,14 @@ function checkWebIntegrity() {
                     headers["content-length"] == webContent.csscontent[cssPathIndex].contentlength &&
                     headers["last-modified"] == webContent.csscontent[cssPathIndex].lastmodified
                 ) {
-                    console.log(`Nessun aggiornamento per (${webContent.csscontent[cssPathIndex].urlPath})`);
+                    console.log(langConfig.no_update_for, `(${webContent.csscontent[cssPathIndex].urlPath})`);
                     if (cssPathIndex == webConfig.webTreeCSS.cssFilesPath.length - 1) {
                         _done_CSS = true;
                         redyForWebProductsIntegrityCheck(_done_HTML, _done_JS, _done_CSS);
                     }
                     return;
                 } else {
-                    console.error("\x1b[35m", "Aggiornamento del contenuto nei file locali: ", webConfig.webTreeCSS.dirName + webConfig.webTreeCSS.cssFilesPath[cssPathIndex]);
+                    console.error("\x1b[35m", langConfig.local_content_update, webConfig.webTreeCSS.dirName + webConfig.webTreeCSS.cssFilesPath[cssPathIndex]);
 
                     data = "";
                     res.on("data", (chunk) => {
@@ -256,7 +253,7 @@ function checkWebIntegrity() {
                         fs.writeFileSync(fileName, data, "utf8", function (err) {
                             if (err) return console.log(err);
                             fs.chmod(fileName, 0777, (error) => {
-                                if (error) console.error(`Impossibile cambiare il permesso del file per (${webConfig.webTree[webPathIndex]})`);
+                                if (error) console.error(langConfig.cannot_change_file_ferm, `(${webConfig.webTree[webPathIndex]})`);
                             });
                         });
                         webContent.csscontent[cssPathIndex] = {
@@ -281,9 +278,8 @@ function checkWebIntegrity() {
 //Quando tutti 3 moduli hanno finito il controllo la funziona chiama il prossimo passaggio
 function redyForWebProductsIntegrityCheck(__done_HTML, __done_JS, __done_CSS) {
     if (__done_HTML && __done_JS && __done_CSS) {
-        console.log("\x1b[32m", "Aggiornamento dei file eseguito...");
+        console.log("\x1b[32m", langConfig.end_update_local_allfiles);
         checkStaticImages();
-        checkThemes();
     }
 }
 
@@ -309,45 +305,6 @@ function checkStaticImages() {
     req.end();
 }
 
-function downloadThemes(themesList) {
-    for (let themes_indx = 0; themes_indx < themesList.length; themes_indx++) {
-        var options = {
-            host: webConfig.baseURL,
-            port: 443,
-            path: `/fileStorage/themes/${themesList[themes_indx].themeId}/${themesList[themes_indx].themePath}`,
-            method: "GET",
-        };
-
-        let _localThemesDirectory = OSPrefixPATH + `webTree/fileStorage/themes/${themesList[themes_indx].themeId}`;
-        if (!fs.existsSync(_localThemesDirectory)) {
-            console.log("Creazione della cartella dei temi...", _localThemesDirectory);
-            fs.mkdirSync(_localThemesDirectory, { recursive: true });
-            //Quando la directory vieni create (per linux/android) ci sta il bisogno di cambiare il permesso del file per poter salvare dentro altri file
-            fs.chmod(_localThemesDirectory, 0777, (error) => {
-                if (error) console.error(`Impossibile cambiare il permesso del file per (${_localdefaultDirectories})`);
-            });
-        }
-
-        var req = https.request(options, function (res) {
-            let data = "";
-            res.on("data", (chunk) => {
-                data += chunk;
-            });
-
-            res.on("end", () => {
-                let fileName = `${OSPrefixPATH}webTree/fileStorage/themes/${themesList[themes_indx].themeId}/${themesList[themes_indx].themePath}`;
-                fs.writeFileSync(fileName, data, "utf8", function (err) {
-                    if (err) return console.log(err);
-                    fs.chmod(fileName, 0777, (error) => {
-                        if (error) console.error(`Impossibile cambiare il permesso del file per (${webConfig.webTree[webPathIndex]})`);
-                    });
-                });
-            });
-        });
-        req.end();
-    }
-}
-
 function downloadStaticImages(staticImagesList) {
     let static_images_list_indxREQUEST_COMPLETED = [];
     for (let staticImages_indx = 0; staticImages_indx < staticImagesList.length; staticImages_indx++) {
@@ -358,7 +315,7 @@ function downloadStaticImages(staticImagesList) {
             method: "GET",
         };
 
-        var req = https.request(options, function (res) {
+        let req = https.request(options, function (res) {
             let data = "";
             res.setEncoding("binary");
 
@@ -373,13 +330,13 @@ function downloadStaticImages(staticImagesList) {
                 fs.writeFile(_file, data, "binary", function (err) {
                     if (err) {
                         console.log(err);
-                        console.error(`Il file : ${_file} Г© corrotto e non si Г© salvato sul disco locale...`);
+                        console.error(langConfig.cannot_save_file, `(${_file})`);
                     } else {
                         fs.chmod(_file, 0777, (error) => {
-                            if (error) console.error(`Impossibile cambiare il permesso del file per (${_file})`);
+                            if (error) console.error(langConfig.cannot_change_file_ferm, `(${_file})`);
                         });
                     }
-                    console.log("\x1b[32m", `(${staticImages_indx})Fine del salvataggio del file: `, _file);
+                    console.log("\x1b[32m", `(${staticImages_indx}) ${langConfig.end_write_local_file}`, _file);
                 });
 
                 if (static_images_list_indxREQUEST_COMPLETED.length == staticImagesList.length) {
@@ -393,34 +350,10 @@ function downloadStaticImages(staticImagesList) {
     }
 }
 
-function checkThemes() {
-    var options = {
-        host: webConfig.baseURL,
-        port: 8443,
-        path: "/materialeinvendita/themes",
-        method: "GET",
-    };
-
-    var req = https.request(options, function (res) {
-        let data = "";
-        res.on("data", (chunk) => {
-            data += chunk;
-        });
-
-        res.on("end", () => {
-            data = JSON.parse(data);
-            downloadThemes(data);
-        });
-    });
-    req.end();
-}
-
 function checkWebProductsIntegrity() {
-    console.log(
-        "\n#####################################################################\nAvvio del aggiornamento dei dati in corso...\n#####################################################################\n"
-    );
+    console.log(langConfig.start_data_update);
     if (webConfig.baseURL == undefined) {
-        console.error("Nessun URL specificato nel file config...");
+        console.error(langConfig.no_base_url);
         process.exit(1);
     }
 
@@ -432,7 +365,7 @@ function checkWebProductsIntegrity() {
         method: "GET",
     };
 
-    var req = https.request(options, function (res) {
+    let req = https.request(options, function (res) {
         let data = "";
         res.on("data", (chunk) => {
             data += chunk;
@@ -454,13 +387,13 @@ function checkWebProductsIntegrity() {
                 fs.writeFile(OSPrefixPATH + "webTree/items_content.json", JSON.stringify(webitemsContent), function (err) {
                     if (err) return console.error(err);
                     if (store == data.length - 1) {
+                        req.end();
                         checkWebProductsIntegrity_STORAGES();
                     }
                 });
             }
         });
     });
-    req.end();
 }
 
 function checkWebProductsIntegrity_STORAGES() {
@@ -589,7 +522,7 @@ function checkWebProductsIntegrity_PRODUCTS() {
 
                     fs.writeFile(OSPrefixPATH + "webTree/items_content.json", JSON.stringify(webitemsContent), function (err) {
                         if (err) {
-                            return console.error("Errore: ", err);
+                            return console.error(langConfig.general_error, err);
                         }
                         if (storage_id_list_indxREQUEST_COMPLETED.length == storage_id_list.length && _item_inx == data.storage[0].product.length - 1) {
                             //console.log("DONE");
@@ -616,16 +549,14 @@ function readLocalUsersDirectory() {
             files.map(function (f) {
                 _usersDirectory.push(f);
             });
-            console.log("Lettura della directory locale finita. Inizio controllo sui media....");
+            console.log(langConfig.end_read_local_dir_start_media);
             checkWebImagesIntegrity(_usersDirectory);
         }
     });
 }
 
 function checkWebImagesIntegrity(__usersDirectory) {
-    console.log(
-        "\n#####################################################################\nAvvio del aggiornamento dei media...\n#####################################################################\n"
-    );
+    console.log(langConfig.start_media_update);
     //?INDEX MEDIA
     //Prendiamo dal file content.json l'informazione delle immagini dinamiche che servono per le locandine dei negozi
     let _indexMedia = [];
@@ -694,7 +625,7 @@ function downloadMedia(_indexMedia, _localDirMedia, __usersDirectory) {
     for (let idmio = 0; idmio < _indexDoubleMediaIndexOf.length; idmio++) {
         _indexMedia.splice(_indexDoubleMediaIndexOf[idmio], 1);
     }
-    console.log("Media da scaricare: ", _indexMedia.length);
+    console.log(langConfig.download_media, _indexMedia.length);
     if (_indexMedia.length > 0) {
         let saved_media_list_indxREQUEST_COMPLETED = [];
         for (let _im = 0; _im < _indexMedia.length; _im++) {
@@ -704,10 +635,10 @@ function downloadMedia(_indexMedia, _localDirMedia, __usersDirectory) {
                 fs.mkdirSync(_localArchive_directory, { recursive: true });
                 //Quando la directory vieni create (per linux/android) ci sta il bisogno di cambiare il permesso del file per poter salvare dentro altri file
                 fs.chmod(_localArchive_directory, 0777, (error) => {
-                    if (error) console.error(`Impossibile cambiare il permesso del file per (${_localArchive_directory})`);
+                    if (error) console.error(langConfig.cannot_change_file_ferm, `(${_localArchive_directory})`);
                 });
             }
-            console.log("Controllo media: ", _indexMedia[_im].media_path);
+            console.log(langConfig.check_media, `(${_indexMedia[_im].media_path})`);
             var options = {
                 host: webConfig.baseURL,
                 port: 443,
@@ -720,7 +651,7 @@ function downloadMedia(_indexMedia, _localDirMedia, __usersDirectory) {
                     let data = "";
                     let headers = res.headers;
 
-                    console.log(_im + ". Media: (" + _indexMedia[_im].media_path + ") si sta scaricando nel archivio locale.");
+                    console.log(_im, `.${langConfig.save_media_file}`, `(${_indexMedia[_im].media_path})`);
                     res.setEncoding("binary");
                     res.on("data", (chunk) => {
                         data += chunk;
@@ -730,18 +661,18 @@ function downloadMedia(_indexMedia, _localDirMedia, __usersDirectory) {
                         //let _media_data = data.replace(/^data:image\/\w+;base64,/, "");
                         //let buf = Buffer.from(_media_data, "base64");
                         let _file = `${OSPrefixPATH}webTree/fileStorage/archive/${_indexMedia[_im].media_owner}/${_indexMedia[_im].media_path}`;
-                        console.log("\x1b[33m", "Inizio del salvataggio del file: ", _file);
+                        console.log("\x1b[33m", langConfig.start_saving_file, `(${_file})`);
                         saved_media_list_indxREQUEST_COMPLETED.push(_im);
                         fs.writeFile(_file, data, "binary", function (err) {
                             if (err) {
                                 console.log(err);
-                                console.error(`Il file : ${_file} Г© corrotto e non si Г© salvato sul disco locale...`);
+                                console.error(langConfig.cannot_save_file, `(${_file})`);
                             } else {
                                 fs.chmod(_file, 0777, (error) => {
-                                    if (error) console.error(`Impossibile cambiare il permesso del file per (${_file})`);
+                                    if (error) console.error(langConfig.cannot_change_file_ferm, `(${_file})`);
                                 });
                             }
-                            console.log("\x1b[32m", `(${_im})Fine del salvataggio del file: `, _file);
+                            console.log("\x1b[32m", `(${_im}) ${langConfig.end_write_local_file}`, _file);
                         });
 
                         let seconds = 1;
@@ -749,12 +680,12 @@ function downloadMedia(_indexMedia, _localDirMedia, __usersDirectory) {
                         while (waitTill > new Date()) {}
 
                         if (saved_media_list_indxREQUEST_COMPLETED.length == _indexMedia.length) {
-                            console.log("\n#####################################################################\nRichiesta di avvio del server locale");
+                            console.log(langConfig.start_self_server_request_0);
                             setTimeout(function () {
                                 startWebServer();
                             }, 5000);
                         } else {
-                            console.log("STIAMO SU ", saved_media_list_indxREQUEST_COMPLETED.length, _indexMedia.length);
+                            console.log(langConfig.loading, saved_media_list_indxREQUEST_COMPLETED.length, _indexMedia.length);
                         }
                     });
                 })
@@ -764,7 +695,7 @@ function downloadMedia(_indexMedia, _localDirMedia, __usersDirectory) {
             req.end();
         }
     } else {
-        console.log("\n#####################################################################\nRichiesta di avvio del server locale");
+        console.log(langConfig.start_self_server_request_0);
         setTimeout(function () {
             startWebServer();
         }, 5000);
@@ -813,14 +744,14 @@ function checkUnusedMedia(media, existingLocalDirs) {
 
                         //console.log("localmedias ", _localDirMedia);
                         deleteUnusedMedia(_mediaToDelete);
-                        console.log("\x1b[44m", "\x1b[30m", "Inizio del scaricamento dei file...");
+                        console.log("\x1b[44m", "\x1b[30m", langConfig.start_file_loading);
                         downloadMedia(_mediaToDownload, _localDirMedia, existingLocalDirs);
                     }
                 }
             });
         }
     } else {
-        console.log("\x1b[44m", "\x1b[30m", "Inizio del scaricamento dei file...");
+        console.log("\x1b[44m", "\x1b[30m", langConfig.start_file_loading);
         downloadMedia(media, _localDirMedia, existingLocalDirs);
     }
 }
@@ -828,11 +759,11 @@ function checkUnusedMedia(media, existingLocalDirs) {
 function deleteUnusedMedia(__mediaToDelete) {
     for (let h = 0; h < __mediaToDelete.length; h++) {
         let _file = `${OSPrefixPATH}webTree/fileStorage/archive/${__mediaToDelete[h].j.media_owner}/${__mediaToDelete[h].j.media_path}`;
-        console.log("Sto eliminando:", _file);
+        console.log(langConfig.deleting_file, `(${_file})`);
         try {
             fs.unlinkSync(_file);
         } catch (error) {
-            console.error(`Il file (${_file}) ha dato un errore durante l'elliminazione. Probabilmente il file non esiste o pure non ha i permessi per essere modificato...`);
+            console.error(langConfig.cannot_delete_file, `(${_file})`);
         }
     }
 }
@@ -844,9 +775,9 @@ function startWebServer() {
         return;
     }
 
-    console.log("Avvio del server locale\n#####################################################################\n");
+    console.log(langConfig.start_self_server_request_1);
     http.createServer(function (request, response) {
-        console.log("Richiesta per... " + request.url);
+        console.log(langConfig.start_url_request, request.url);
 
         var filePath = OSPrefixPATH + "webTree" + request.url.split("?")[0];
         console.log(filePath);
@@ -889,7 +820,7 @@ function startWebServer() {
                     });
                 } else {
                     response.writeHead(500);
-                    response.end("Errore lato server: " + error.code + " ..\n");
+                    response.end(error_server, error.code + " ..\n");
                     response.end();
                 }
             } else {
@@ -897,9 +828,9 @@ function startWebServer() {
                 response.end(content, "utf-8");
             }
         });
-        console.log("Risposta del server locale... " + filePath);
+        console.log(langConfig.local_server_response, filePath);
     }).listen(8853);
-    console.log("Il server locale lavora su http://127.0.0.1:8853/");
+    console.log(langConfig.server_started_at);
 
     var interfaces = os.networkInterfaces();
     var addresses = [];
@@ -912,7 +843,7 @@ function startWebServer() {
         }
     }
 
-    console.log("L'indirizzo della macchina sulla rete locale:");
+    console.log(langConfig.local_server_address);
     console.log(addresses);
 
     setTimeout(function () {
@@ -921,13 +852,11 @@ function startWebServer() {
 }
 
 function startWebBrowser() {
-    console.log(
-        "\n#####################################################################\nAvvio del browser\n#####################################################################\n"
-    );
+    console.log("");
     if (OSplatform == "android") {
         exec("am start --user 0 -n com.materialeinvendita.kiosk/com.materialeinvendita.kiosk.MainActivity", (error, stdout, stderr) => {
             if (error) {
-                console.log(`error: ${error.message}`);
+                console.log(langConfig.general_error, `${error.message}`);
                 return;
             }
             if (stderr) {

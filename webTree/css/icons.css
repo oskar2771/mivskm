@@ -1,0 +1,186 @@
+.faq-icon {
+    background: url(../Img/Icone/faq.png) no-repeat 0 50%;
+    background-size: 16px 16px;
+    display: block;
+}
+.logout-icon {
+    background: url(../Img/Icone/svg/logout.svg) no-repeat 0 50%;
+    background-size: 16px 16px;
+    display: block;
+}
+.notification_unread-icon {
+    background: url(../Img/Icone/svg/notification_unread.svg) no-repeat 0 50%;
+    background-size: 16px 16px;
+    display: block;
+}
+.notification-icon {
+    background: url(../Img/Icone/svg/notification.svg) no-repeat 0 50%;
+    background-size: 16px 16px;
+    display: block;
+}
+.block-icon {
+    background: url(../Img/Icone/svg/block.svg) no-repeat 0 50%;
+    background-size: 16px 16px;
+    display: block;
+}
+.search-icon {
+    background: url(../Img/Icone/svg/search.svg) no-repeat 0 50%;
+    background-size: 16px 16px;
+    display: block;
+}
+.search_white-icon {
+    background: url(../Img/Icone/svg/search_w.svg) no-repeat 0 50%;
+    background-size: 16px 16px;
+    display: block;
+}
+.search_flat-icon {
+    background: url(../Img/Icone/svg/search_flat.svg) no-repeat 0 50%;
+    background-size: 16px 16px;
+    width: 16px;
+    height: 16px;
+    display: block;
+}
+.miniArrow_down {
+    background-repeat: no-repeat;
+    background-size: 9px 5px;
+    background-position: 109px 19px;
+    background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHdpZHRoPSIxMHB4IiBoZWlnaHQ9IjZweCIgdmlld0JveD0iMCAwIDEwIDYiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+ICAgICAgICA8dGl0bGU+RG93biBCb2xkPC90aXRsZT4gICAgPGRlc2M+Q3JlYXRlZCB3aXRoIFNrZXRjaC48L2Rlc2M+ICAgIDxkZWZzPiAgICAgICAgPHBhdGggZD0iTTUuMDc3NDk5OTksNS42MTg3NDk5NyBDNC44ODkzNzQ5OSw1LjYxNDk5OTk3IDQuNzQwNjI0OTksNS41NDkzNzQ5NyA0LjYyOTM3NDk5LDUuNDM0OTk5OTcgTDAuNzM5Mzc0OTg1LDEuNDM0OTk5OTcgQzAuNjMxODc0OTg1LDEuMzIzMTI0OTcgMC41Njg3NDk5ODUsMS4xNzU2MjQ5NyAwLjU2MjQ5OTk4NSwxLjAxODc0OTk3IEwwLjU2MjQ5OTk4NSwwLjk3Mzc0OTk3IEMwLjU2ODc0OTk4NSwwLjgxMzEyNDk3IDAuNjMxODc0OTg1LDAuNjY0OTk5OTcgMC43MzkzNzQ5ODUsMC41NTM3NDk5NyBDMC45NzI0OTk5ODUsMC4zMTQ5OTk5NyAxLjM3NjI0OTk5LDAuMzE2MjQ5OTcgMS42MDY4NzQ5OSwwLjU1Mzc0OTk3IEw1LjA2MjQ5OTk5LDQuMTA4MTI0OTcgTDguNTE3NDk5OTksMC41NTMxMjQ5NyBDOC43NDk5OTk5OSwwLjMxNTYyNDk3IDkuMTUzMTI0OTksMC4zMTU2MjQ5NyA5LjM4NDM3NDk5LDAuNTUzMTI0OTcgQzkuNDk0Mzc0OTksMC42NjU2MjQ5NyA5LjU1NzQ5OTk5LDAuODE0OTk5OTcgOS41NjI0OTk5OSwwLjk3Mzc0OTk3IEw5LjU2MjQ5OTk5LDEuMDA5OTk5OTcgQzkuNTU3NDk5OTksMS4xNzMxMjQ5NyA5LjQ5Mzc0OTk5LDEuMzIyNDk5OTcgOS4zODQzNzQ5OSwxLjQzNDk5OTk3IEw1LjQ5NTYyNDk5LDUuNDM0OTk5OTcgQzUuMzg0Mzc0OTksNS41NDkzNzQ5NyA1LjIzNTYyNDk5LDUuNjE0OTk5OTcgNS4wNzc0OTk5OSw1LjYxODc0OTk3IiBpZD0icGF0aC0xIj48L3BhdGg+ICAgIDwvZGVmcz4gICAgPGcgaWQ9IlNlYXJjaC1Qcm9taW5lbmNlLTExIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4gICAgICAgIDxnIGlkPSJDYXQtZHJvcGRvd24tcmVzcG9uc2l2ZS0wNCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTk5OC4wMDAwMDAsIC02Ni4wMDAwMDApIj4gICAgICAgICAgICA8ZyBpZD0iR3JvdXAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI0Mi4wMDAwMDAsIDQ4LjAwMDAwMCkiPiAgICAgICAgICAgICAgICA8ZyBpZD0iRG93biIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNzU1LjAwMDAwMCwgMTguMDAwMDAwKSI+ICAgICAgICAgICAgICAgICAgICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwLjUwMDAwMCwgMC4wMDAwMDApIj4gICAgICAgICAgICAgICAgICAgICAgICA8bWFzayBpZD0ibWFzay0yIiBmaWxsPSJ3aGl0ZSI+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIDx1c2UgeGxpbms6aHJlZj0iI3BhdGgtMSI+PC91c2U+ICAgICAgICAgICAgICAgICAgICAgICAgPC9tYXNrPiAgICAgICAgICAgICAgICAgICAgICAgIDx1c2UgaWQ9IkRvd24tQm9sZCIgZmlsbD0iIzc2NzY3NiIgeGxpbms6aHJlZj0iI3BhdGgtMSI+PC91c2U+ICAgICAgICAgICAgICAgICAgICA8L2c+ICAgICAgICAgICAgICAgIDwvZz4gICAgICAgICAgICA8L2c+ICAgICAgICA8L2c+ICAgIDwvZz48L3N2Zz4=);
+}
+.add-icon {
+    background: url(../Img/Icone/svg/add.svg) no-repeat 0 50%;
+    background-size: 16px 16px;
+    display: block;
+}
+.leftarrow-icon {
+    background: url(../Img/Icone/svg/arrow.svg) no-repeat 0 50%;
+    background-size: 13px 22px;
+    display: block;
+}
+.rightarrow-icon {
+    background: url(../Img/Icone/svg/arrow.svg) no-repeat 0 50%;
+    background-size: 13px 22px;
+    display: block;
+    transform: scaleX(-1);
+}
+.statistic-icon {
+    background: url(../Img/Icone/svg/statistics.svg) no-repeat 0 50%;
+    background-size: 18px 18px;
+    display: block;
+}
+.users-icon {
+    background: url(../Img/Icone/svg/users.svg) no-repeat 0 50%;
+    background-size: 18px 18px;
+    display: block;
+}
+.shop-icon {
+    background: url(../Img/Icone/svg/shop.svg) no-repeat 0 50%;
+    background-size: 18px 18px;
+    display: block;
+}
+.image-icon {
+    background: url(../Img/Icone/svg/insert_photo-24px.svg) no-repeat 0 50%;
+    background-size: 18px 18px;
+    display: block;
+}
+.ordini-icon {
+    background: url(../Img/Icone/svg/sell-24px.svg) no-repeat 0 50%;
+    background-size: 18px 18px;
+    display: block;
+}
+.terminal-icon {
+    background: url(../Img/Icone/svg/device_hub-24px.svg) no-repeat 0 50%;
+    background-size: 18px 18px;
+    display: block;
+}
+.first-page-icon {
+    background: url(../Img/Icone/svg/web-24px.svg) no-repeat 0 50%;
+    background-size: 18px 18px;
+    display: block;
+}
+.storage-icon {
+    background: url(../Img/Icone/svg/storage.svg) no-repeat 0 50%;
+    background-size: 18px 18px;
+    display: block;
+}
+.edit-icon {
+    background: url(../Img/Icone/svg/edit.svg) no-repeat 0 50%;
+    background-size: 18px 18px;
+    display: block;
+}
+.delete-icon {
+    background: url(../Img/Icone/svg/delete.svg) no-repeat 0 50%;
+    background-size: 20px 20px;
+    display: block;
+}
+.lock-icon {
+    background: url(../Img/Icone/svg/lock.svg) no-repeat 0 50%;
+    background-size: 20px 20px;
+    display: block;
+}
+.confirm-icon {
+    background: url(../Img/Icone/svg/confirm.svg) no-repeat 0 50%;
+    background-size: 20px 20px;
+    display: block;
+}
+.brush-icon {
+    background: url(../Img/Icone/svg/brush.svg) no-repeat 0 50%;
+    background-size: 18px 18px;
+    display: block;
+}
+.menu-icon {
+    background: url(../Img/Icone/svg/menu.svg) no-repeat 0 50%;
+    background-size: 24px 24px;
+    display: block;
+}
+.arrow_drop_down-icon {
+    background: url(../Img/Icone/svg/arrow_drop_down-24px.svg) no-repeat 0 50%;
+    background-size: 24px 24px;
+    width: 24px;
+    height: 24px;
+    display: block;
+}
+.info-icon {
+    background: url(../Img/Icone/svg/info-24px.svg) no-repeat 0 50%;
+    background-size: 24px 24px;
+    width: 24px;
+    height: 24px;
+    display: block;
+}
+.announcement-icon {
+    background: url(../Img/Icone/svg/announcement-24px.svg) no-repeat 0 50%;
+    background-size: 24px 24px;
+    width: 24px;
+    height: 24px;
+    display: block;
+}
+.report_problem-icon {
+    background: url(../Img/Icone/svg/report_problem-24px.svg) no-repeat 0 50%;
+    background-size: 24px 24px;
+    width: 24px;
+    height: 24px;
+    display: block;
+}
+.showpass-icon {
+    background: url(../Img/Icone/svg/visibility_off-24px.svg) no-repeat 0 50%;
+    background-size: auto;
+    background-size: 24px 24px;
+    display: block;
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    right: 6px;
+    padding: 12px 0;
+    top: calc(50% - 24px);
+}
+.hidepass-icon {
+    background: url(../Img/Icone/svg/visibility-24px.svg) no-repeat 0 50%;
+    background-size: auto;
+    background-size: 24px 24px;
+    display: block;
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    right: 6px;
+    padding: 12px 0;
+    top: calc(50% - 24px);
+}
